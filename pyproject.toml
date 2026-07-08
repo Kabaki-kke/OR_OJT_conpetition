@@ -21,9 +21,11 @@ classifiers = [
 ]
 dependencies = [
     "docker >= 7.1.0",
-    "click >= 8.1.7",
-    "jsonschema >= 4.23.0"
+    "click>=8.1.7",
     # Add more dependencies here
+    "jsonschema >= 4.23.0",
+    "pandas>=2.3.3",
+    "matplotlib>=3.10.9",
 ]
 
 [project.urls]
