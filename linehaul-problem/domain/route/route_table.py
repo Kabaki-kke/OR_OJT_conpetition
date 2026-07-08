@@ -46,24 +46,24 @@ class RouteTable:
                 self.next_hop_table[(from_, to_)] = __next
 
     def set_route_list_by_1Dlist(self, data:list[list]):
-        for i, d in enumerate(data):
-            f_node_id =i+1
-            from_ = self.nodes.data_dict.get(f_node_id, None)
-            if from_ is None:
-                raise ValueError(f"{f_node_id}はノードリストに登録されていません")
+            for i, d in enumerate(data):
+                # 1から始まる連番ではなく、読み込まれたノードリストのi番目を直接取得する
+                if i >= len(self.nodes.data_list):
+                    raise ValueError(f"データの行数がノードリストの数（{len(self.nodes.data_list)}）を超えています")
+                from_ = self.nodes.data_list[i]
+                
+                for to_, _next in zip(self.nodes.data_list, d):
+                    if from_ == to_:
+                        continue
+                    __next = self.nodes.data_dict.get(_next, None)
+                    if __next is None:
+                        raise ValueError(f"{_next}はノードリストに登録されていません")
+                    if from_ == __next:
+                        raise ValueError(f"{from_}のnext_hopに{from_}が指定されています")
+                    if not self.branches.is_connected(from_, __next):
+                        raise ValueError(f"{from_}と{__next}は接続していません")
 
-            for to_, _next in zip(self.nodes.data_list, d):
-                if from_ == to_:
-                    continue
-                __next = self.nodes.data_dict.get(_next, None)
-                if __next is None:
-                    raise ValueError(f"{_next}はノードリストに登録されていません")
-                if from_ == __next:
-                    raise ValueError(f"{from_}のnext_hopに{from_}が指定されています")
-                if not self.branches.is_connected(from_, __next):
-                    raise ValueError(f"{from_}と{__next}は接続していません")
-
-                self.next_hop_table[(from_, to_)] = __next
+                    self.next_hop_table[(from_, to_)] = __next
 
 
     def get_next(self, from_: NodeData, to_: NodeData) -> NodeData:

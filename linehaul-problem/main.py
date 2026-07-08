@@ -17,21 +17,22 @@ logging.basicConfig(level=logging.INFO)
 LOGGER = logging.getLogger(__name__)  # Logger
 
 
-@click.command(help="Example problem.")
-@click.option(
-    "-c",
-    "--case_name",
-    type=str,
-    help="case_name",
-)
-@click.option(
-    "-t",
-    "--case_type",
-    type=str,
-    help="case_type",
-)
+# @click.command(help="Example problem.")
+# @click.option(
+#     "-c",
+#     "--case_name",
+#     type=str,
+#     help="case_name",
+# )
+# @click.option(
+#     "-t",
+#     "--case_type",
+#     type=str,
+#     help="case_type",
+# )
 def main(case_name: str, case_type) -> None:
     """Example main function for evaluating given variable."""
+    # このファイルの親の親の場所　/problem-linehaul
     root = Path(__file__).parent.parent
     env_var = {"case_name": case_name,
                "case_type": case_type}
@@ -40,11 +41,11 @@ def main(case_name: str, case_type) -> None:
         validated_example_env = validate_example_env(env_var)  # Validate the environment variable
         msg = f"{validated_example_env}"
         LOGGER.info(msg)
-
+        # case_nameをもとに、諸々のファイルがある場所を指定
         path_setting = PathSetting(str(root), validated_example_env["case_name"].strip())
-
+        
         problem = ProblemFactory.create(validated_example_env["case_type"].strip(),
-                                        path_setting.routing_table)
+                                        path_setting)
 
         problem.validate()  # Validate the variable
         # msg = f"validated_variable: {validated_variable}"
@@ -71,4 +72,6 @@ def main(case_name: str, case_type) -> None:
 
 
 if __name__ == "__main__":
-    main()
+    # case_type = "test"　　なら　/problem-linehaul/case/{case_name}/input.json　を読み込む
+    # case_type = "problem" なら　手入力
+    main("test", "test")
