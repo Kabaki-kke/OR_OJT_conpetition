@@ -1,12 +1,13 @@
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
+from pathlib import Path
 
 # 1. 各ファイルの読み込み
 # 実行する環境に合わせてパスを調整してください
-current_dir = os.getcwd()
-pref_file_path = os.path.join(current_dir, 'prefectures.csv')
-route_file_path = os.path.join(current_dir, 'truck_distance_time_long.csv')
+file_dir = Path(__file__).resolve().parent
+pref_file_path = os.path.join(file_dir, 'prefectures.csv')
+route_file_path = os.path.join(file_dir, 'truck_distance_time_long.csv')
 
 df_pref = pd.read_csv(pref_file_path)
 df_route = pd.read_csv(route_file_path)
@@ -36,8 +37,8 @@ for idx, row in df_route.iterrows():
 ax.scatter(df_pref['longitude'], df_pref['latitude'], color='blue', edgecolors='black', s=50, zorder=3)
 
 # --- ③ 都道府県名の描画 (ラベル) ---
-# for idx, row in df_pref.iterrows():
-#     ax.text(row['longitude'] + 0.05, row['latitude'] + 0.05, row['prefecture_name'], fontsize=8, zorder=4)
+for idx, row in df_pref.iterrows():
+    ax.text(row['longitude'] + 0.05, row['latitude'] + 0.05, row['prefecture_code'], fontsize=8, zorder=4)
 
 # 4. グラフの装飾設定
 ax.set_title(f'Prefecture Locations and Truck Routes (Count: {possible_way_count})', fontsize=14)
@@ -47,7 +48,7 @@ ax.grid(True, linestyle='--', alpha=0.6, zorder=2)
 ax.set_aspect('equal', adjustable='box')
 
 # 5. グラフの保存
-save_path = os.path.join(current_dir, 'prefectures_routes_map.png')
+save_path = os.path.join(file_dir, 'prefectures_routes_map.png')
 plt.savefig(save_path, bbox_inches='tight')
 
 # ローカル環境の画面にポップアップ表示させたい場合は、以下のコメントアウトを解除してください

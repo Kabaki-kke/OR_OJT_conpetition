@@ -74,4 +74,4 @@ def main(case_name: str, case_type) -> None:
 if __name__ == "__main__":
     # case_type = "test"　　なら　/problem-linehaul/case/{case_name}/input.json　を読み込む
     # case_type = "problem" なら　手入力
-    main("test", "test")
+    main("kyuusyuu", "test")
