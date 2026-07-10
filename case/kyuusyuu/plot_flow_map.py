@@ -5,13 +5,17 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-def main():
+def main(method_name = None):
     # 1. 各ファイルの読み込み形式（plot_load_map.pyの形式に完全準拠）
     file_dir = Path(__file__).resolve().parent
+    if method_name !=  None:
+        case_dir = os.path.join(file_dir, method_name)
+    else:
+        case_dir = file_dir
     pref_file_path = os.path.join(file_dir, 'prefectures.csv')
     route_file_path = os.path.join(file_dir, 'truck_distance_time_long.csv')
     flow_file_path = os.path.join(file_dir, 'virtual_prefecture_flows.csv')
-    input_file_path = os.path.join(file_dir, 'input.json')
+    input_file_path = os.path.join(case_dir, 'input.json')
 
     # 必要ファイルの存在チェック
     for p in [pref_file_path, route_file_path, flow_file_path, input_file_path]:
@@ -173,11 +177,12 @@ def main():
     ax.set_aspect('equal', adjustable='box')
 
     # 6. グラフの保存と表示
-    save_path = os.path.join(file_dir, 'route_flow_map.png')
+    save_path = os.path.join(case_dir, 'route_flow_map.png')
     plt.savefig(save_path, bbox_inches='tight', dpi=150)
     print(f"正常に有向流量マップ画像を保存しました: {save_path}")
 
     plt.show()
 
 if __name__ == '__main__':
-    main()
+    method_name = "dijkstra"
+    main(method_name)

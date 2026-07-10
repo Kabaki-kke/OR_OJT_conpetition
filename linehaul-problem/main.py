@@ -30,7 +30,7 @@ LOGGER = logging.getLogger(__name__)  # Logger
 #     type=str,
 #     help="case_type",
 # )
-def main(case_name: str, case_type) -> None:
+def main(case_name: str, case_type, method_name = None) -> None:
     """Example main function for evaluating given variable."""
     # このファイルの親の親の場所　/problem-linehaul
     root = Path(__file__).parent.parent
@@ -42,7 +42,7 @@ def main(case_name: str, case_type) -> None:
         msg = f"{validated_example_env}"
         LOGGER.info(msg)
         # case_nameをもとに、諸々のファイルがある場所を指定
-        path_setting = PathSetting(str(root), validated_example_env["case_name"].strip())
+        path_setting = PathSetting(str(root), validated_example_env["case_name"].strip(), method_name)
         
         problem = ProblemFactory.create(validated_example_env["case_type"].strip(),
                                         path_setting)
@@ -54,7 +54,7 @@ def main(case_name: str, case_type) -> None:
         result = evaluate(problem, path_setting)  # Evaluate the variable
         msg = f"result: {result}"
         LOGGER.info(msg)
-
+        
         sys.stdout.write(json.dumps(result) + "\n")  # Write the result to the standard output
 
     except Exception as e:
@@ -74,4 +74,4 @@ def main(case_name: str, case_type) -> None:
 if __name__ == "__main__":
     # case_type = "test"　　なら　/problem-linehaul/case/{case_name}/input.json　を読み込む
     # case_type = "problem" なら　手入力
-    main("kyuusyuu", "test")
+    main("kyuusyuu", "test", "dijkstra01")
