@@ -174,10 +174,12 @@ def solve_backward_dijkstra(method_name, input_case, max_iters = 200, no_improve
 
 
 if __name__ == '__main__':
-    method_name = "dijkstra_iter"
+    method_name = "iter_01"
     input_case = "dijkstra001"
-    max_iter = 200
-    no_improvement_limit = 20
+    max_iter = 100
+    ### 解の更新でrandomを用いる場合、適当なステップごとにリセットして大域解を探る
+    ### そうでないなら、no_improvement_limit = max_iterとする
+    no_improvement_limit = 100
     init_objective = evaluate_main("japan", "test", input_case, False)
     solve_backward_dijkstra(method_name, input_case, max_iter, no_improvement_limit)
     plot_flow_map.main(method_name)

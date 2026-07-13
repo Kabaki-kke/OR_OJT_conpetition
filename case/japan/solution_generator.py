@@ -100,9 +100,7 @@ def generate_new_solution(
     route_amount,
     route_variance
 ):
-    """
-    反復コスト更新法による新解生成ロジック
-    """
+
     global _arc_weights, _last_next_hop
     
     # 💡 メイン側での停滞リセット（または初回実行）が入った場合、重みの履歴をクリアして同期する
@@ -110,7 +108,7 @@ def generate_new_solution(
         _arc_weights.clear()
 
     # 1. 前回の流量集計を元に、各アークの「通過単位コスト（重み）」を算出
-    alpha = 0.3  # スムージング係数（小さいほどゆっくり変化し、あっちこっちへのルートの激しい振動を防ぐ）
+    alpha = 0.1  # スムージング係数（小さいほどゆっくり変化し、あっちこっちへのルートの激しい振動を防ぐ）
     new_weights = {}
     
     
@@ -121,7 +119,7 @@ def generate_new_solution(
             V = route_variance[u_idx][v_idx]
             
             if L > 0:
-                T = calc_required_trucks_for_early_iteration(L, V)
+                T = calc_required_trucks(L, V)
                 # トラック1台（10万kg満載）あたりのコスト効率を計算
                 # 荷物が少なく、積載率が悪いアークほどペナルティ（eff）が大きくなる
                 eff = T / (L / 100000.0)
