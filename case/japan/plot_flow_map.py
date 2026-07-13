@@ -184,5 +184,5 @@ def main(method_name = None):
     # plt.show()
 
 if __name__ == '__main__':
-    method_name = "direct"
+    method_name = "local_minima"
     main(method_name)
