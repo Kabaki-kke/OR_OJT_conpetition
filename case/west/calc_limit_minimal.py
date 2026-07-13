@@ -38,13 +38,13 @@ for _, row in df_flows.iterrows():
         minute = time_map.get((orig_code, dest_code), 0.0)
         
     # コスト計算式: (kg) * (minute) / 60 / 10
-    cost = (weight_kg * minute) / 60
-    # cost = truck_num * minute / 60 * 10000
+    cost = (weight_kg * minute) / 60 /10
+    cost = truck_num * minute / 60 * 10000
     total_cost += cost
     calculated_count += 1
 
 # 5. 結果の出力
 print(f"--- 九州ケース 直通コスト計算結果 ---")
 print(f"------------------------------------")
-print(f"対象となった総流動数 : {calculated_count} 件 (7県 × 7県)")
+print(f"対象となった総流動数 : {calculated_count} 件 ")
 print(f"calc_limit_minimal   : {total_cost:,.2f}")

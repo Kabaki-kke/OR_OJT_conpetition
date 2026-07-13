@@ -138,7 +138,7 @@ def solve_kyushu_backward_dijkstra(method_name,input_case, max_iters = 100):
         if iter_idx <= max_iters:
             calculator = calc_required_trucks_for_early_iteration
             # changes_in_this_iter += 100
-            # easy_cost_check = True  
+            easy_cost_check = True  
         else:
             calculator = calc_required_trucks
 
@@ -230,7 +230,7 @@ def solve_kyushu_backward_dijkstra(method_name,input_case, max_iters = 100):
                     
                     tb_uv = calculator(route_amount[u_idx][v_idx], route_variance[u_idx][v_idx])
                     ta_uv = calculator(route_amount[u_idx][v_idx] + L, route_variance[u_idx][v_idx] + V)
-                    total_incremental_cost = (ta_uv - tb_uv) * (10000.0 * time / 60.0) + time
+                    total_incremental_cost = (ta_uv - tb_uv) * (10000.0 * time / 60.0) + time * 10
                     total_curr_cost = 0
                     for edge_u, edge_v in path_edges:
                         eu_idx, ev_idx = code_to_idx[edge_u], code_to_idx[edge_v]
@@ -289,8 +289,8 @@ def solve_kyushu_backward_dijkstra(method_name,input_case, max_iters = 100):
     print(f"正常に最短経路の解を作成しました: {output_json_path}")
 
 if __name__ == '__main__':
-    method_name = "dijkstra_new"
-    input_case = "dijkstra001"
+    method_name = "dijkstra_time_100"
+    input_case = "djikstra001"
     evaluate_main("japan", "test", input_case)
     solve_kyushu_backward_dijkstra(method_name,input_case)
     plot_flow_map.main(method_name)

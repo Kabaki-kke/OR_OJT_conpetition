@@ -118,7 +118,7 @@ def solve_kyushu_backward_dijkstra(method_name, sum_multi):
         f.write(output_string)
         
     print(f"正常に最短経路の解を作成しました: {output_json_path}")
-    print(f"要素数: {len(output_solution)} (7x7)")
+    print(f"要素数: {len(output_solution)}")
     # print(f"生成された解: {output_solution}")
 
 if __name__ == '__main__':
@@ -126,4 +126,4 @@ if __name__ == '__main__':
     sum_route_multi = 0.01
     solve_kyushu_backward_dijkstra(method_name, sum_route_multi)
     plot_flow_map.main(method_name)
-    evaluate_main("west", "test", method_name)
+    evaluate_main("japan", "test", method_name)

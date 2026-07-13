@@ -30,7 +30,7 @@ LOGGER = logging.getLogger(__name__)  # Logger
 #     type=str,
 #     help="case_type",
 # )
-def main(case_name: str, case_type, method_name = None) -> None:
+def main(case_name: str, case_type, method_name = None, show_result = True) -> None:
     """Example main function for evaluating given variable."""
     # このファイルの親の親の場所　/problem-linehaul
     root = Path(__file__).parent.parent
@@ -54,8 +54,10 @@ def main(case_name: str, case_type, method_name = None) -> None:
         result = evaluate(problem, path_setting)  # Evaluate the variable
         msg = f"result: {result}"
         LOGGER.info(msg)
-        
-        sys.stdout.write(json.dumps(result) + "\n")  # Write the result to the standard output
+        if show_result:
+            sys.stdout.write(json.dumps(result) + "\n")  # Write the result to the standard output
+            with open(f"{path_setting.method}/output.txt", "w", encoding="utf-8") as f:
+                f.write(result)
 
     except Exception as e:
         error_result = {
@@ -74,4 +76,5 @@ def main(case_name: str, case_type, method_name = None) -> None:
 if __name__ == "__main__":
     # case_type = "test"　　なら　/problem-linehaul/case/{case_name}/input.json　を読み込む
     # case_type = "problem" なら　手入力
-    main("kyuusyuu", "test", "dijkstra01")
+    main("japan", "test", "dijkstra_simple")
+    # main("japan", "test", "dijkstra_new")

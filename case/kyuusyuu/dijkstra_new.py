@@ -36,7 +36,7 @@ def calc_required_trucks(load, variance):
     required_capacity = load #+ 1.65 * sd  # 荷量のブレを考慮した必要キャパ
     return max(1, math.ceil(required_capacity / 100000.0))  # 1台100,000kg制約
 
-def solve_kyushu_backward_dijkstra(method_name,input_case, max_iters = 20):
+def solve_kyushu_backward_dijkstra(method_name,input_case, max_iters = 50):
     # パスの設定
     route_file_path = os.path.join(file_dir, 'truck_distance_time_long.csv')
     prefectures_file_path = os.path.join(file_dir, 'prefectures.csv')
@@ -133,20 +133,24 @@ def solve_kyushu_backward_dijkstra(method_name,input_case, max_iters = 20):
         # この周での Next-Hop の変更箇所数を記録するカウンター
         changes_in_this_iter = 0
         next_hop_map = init_next_hop.copy()
-        
-        if iter_idx <= 100:
+        easy_cost_check  =False
+
+        if iter_idx <= max_iters * 0.5:
+            # 途中までは簡易的なコスト計算（連続値にすることで収束しやすく）
             calculator = calc_required_trucks_for_early_iteration
-            # changes_in_this_iter += 100  
+            # changes_in_this_iter += 100
+            # 簡易計算だけで終わらないように
+            easy_cost_check = True
         else:
+            # 厳密なコスト計算
             calculator = calc_required_trucks
 
         print(f"\n🔄 --- アウター・イテレーション {iter_idx + 1} / {max_iters} ---")
         
         # 1. 目的地リストをコピーしてシャッフル（振動対策）
+        # 行先リスト
         d_list = PREFECTURES_CODE.copy()
         random.shuffle(d_list)
-        
-        
         
         for d in d_list:
             
@@ -228,7 +232,7 @@ def solve_kyushu_backward_dijkstra(method_name,input_case, max_iters = 20):
                     
                     tb_uv = calculator(route_amount[u_idx][v_idx], route_variance[u_idx][v_idx])
                     ta_uv = calculator(route_amount[u_idx][v_idx] + L, route_variance[u_idx][v_idx] + V)
-                    total_incremental_cost = (ta_uv - tb_uv) * (10000.0 * time / 60.0)
+                    total_incremental_cost = (ta_uv - tb_uv) * (10000.0 * time / 60.0) + time * 10
                     total_curr_cost = 0
                     for edge_u, edge_v in path_edges:
                         eu_idx, ev_idx = code_to_idx[edge_u], code_to_idx[edge_v]
@@ -260,7 +264,7 @@ def solve_kyushu_backward_dijkstra(method_name,input_case, max_iters = 20):
         print(f"📊 イテレーション {iter_idx + 1} 終了時の Next-Hop 変更件数: {changes_in_this_iter}")
         
         # 収束判定：1箇所も変更がなければ最適化完了とみなしてブレイク
-        if changes_in_this_iter == 0:
+        if changes_in_this_iter == 0 and not easy_cost_check:
             print("✨ 経路決定が完全に収束しました。反復を終了します。")
             break
 
@@ -287,8 +291,8 @@ def solve_kyushu_backward_dijkstra(method_name,input_case, max_iters = 20):
     print(f"正常に最短経路の解を作成しました: {output_json_path}")
 
 if __name__ == '__main__':
-    method_name = "dijkstra_ver_3"
-    input_case = "super_hub"
+    method_name = "dijkstra_time"
+    input_case = "direct"
     evaluate_main("kyuusyuu", "test", input_case)
     solve_kyushu_backward_dijkstra(method_name,input_case)
     plot_flow_map.main(method_name)

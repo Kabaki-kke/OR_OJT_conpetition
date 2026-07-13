@@ -94,7 +94,7 @@ def main(method_name = None):
         if orig_code in coord_dict and dest_code in coord_dict:
             x = [coord_dict[orig_code]['longitude'], coord_dict[dest_code]['longitude']]
             y = [coord_dict[orig_code]['latitude'], coord_dict[dest_code]['latitude']]
-            ax.plot(x, y, color='gray', alpha=0.3, linewidth=0.5, zorder=1)
+            # ax.plot(x, y, color='gray', alpha=0.3, linewidth=0.5, zorder=1)
             possible_way_count += 1
 
     # --- ② 流量のある路線の強調描画（矢印化・並行分離）と数値の記入 ---
@@ -158,10 +158,10 @@ def main(method_name = None):
                 flow_text = f"{int(flow):,}"
                 
                 # 白背景のボックス付きで数値を印字
-                ax.text(tx, ty, flow_text, color='darkred', fontsize=10, 
-                        fontweight='bold', ha='center', va='center',
-                        bbox=dict(boxstyle='round,pad=0.15', facecolor='white', edgecolor='gray', alpha=0.85, linewidth=0.3),
-                        zorder=4)
+                # ax.text(tx, ty, flow_text, color='darkred', fontsize=10, 
+                #         fontweight='bold', ha='center', va='center',
+                #         bbox=dict(boxstyle='round,pad=0.15', facecolor='white', edgecolor='gray', alpha=0.85, linewidth=0.3),
+                #         zorder=4)
 
     # --- ③ 都道府県のプロット (点 - 完全準拠) ---
     ax.scatter(df_pref['longitude'], df_pref['latitude'], color='blue', edgecolors='black', s=50, zorder=3)

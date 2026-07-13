@@ -42,7 +42,7 @@ def create_one_line_input(path: list[int], output_filename: str = "input.json"):
             
     # JSONファイルとして書き出し
     file_dir = Path(__file__).resolve().parent
-    output_filename = os.path.join(file_dir ,output_filename)
+    output_filename = os.path.join(file_dir , "one_load", output_filename)
     with open(output_filename, "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False)
         
@@ -50,5 +50,5 @@ def create_one_line_input(path: list[int], output_filename: str = "input.json"):
 
 
 if __name__ == "__main__":
-    node_path = range(24,47)
+    node_path = range(1,47)
     create_one_line_input(node_path)

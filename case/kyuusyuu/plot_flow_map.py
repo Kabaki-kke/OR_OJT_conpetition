@@ -5,7 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-def main(method_name = None):
+def main(method_name = None, save_name = None):
     # 1. 各ファイルの読み込み形式（plot_load_map.pyの形式に完全準拠）
     file_dir = Path(__file__).resolve().parent
     if method_name !=  None:
@@ -177,6 +177,8 @@ def main(method_name = None):
     ax.set_aspect('equal', adjustable='box')
 
     # 6. グラフの保存と表示
+    if save_name !=  None:
+        case_dir = os.path.join(file_dir, save_name)
     save_path = os.path.join(case_dir, 'route_flow_map.png')
     plt.savefig(save_path, bbox_inches='tight', dpi=150)
     print(f"正常に有向流量マップ画像を保存しました: {save_path}")
