@@ -30,7 +30,7 @@ LOGGER = logging.getLogger(__name__)  # Logger
 #     type=str,
 #     help="case_type",
 # )
-def main(case_name: str, case_type, method_name = None, show_result = True) -> None:
+def main(case_name: str, case_type, method_name = None, show_result = True):
     """Example main function for evaluating given variable."""
     # このファイルの親の親の場所　/problem-linehaul
     root = Path(__file__).parent.parent
@@ -52,12 +52,16 @@ def main(case_name: str, case_type, method_name = None, show_result = True) -> N
         # LOGGER.info(msg)
 
         result = evaluate(problem, path_setting)  # Evaluate the variable
-        msg = f"result: {result}"
-        LOGGER.info(msg)
-        if show_result:
+        if show_result == True:
+            msg = f"result: {result}"
+            LOGGER.info(msg)
             sys.stdout.write(json.dumps(result) + "\n")  # Write the result to the standard output
             with open(f"{path_setting.method}/output.txt", "w", encoding="utf-8") as f:
                 f.write(result)
+            return
+        else:
+            return result["objective"]
+
 
     except Exception as e:
         error_result = {
@@ -71,10 +75,12 @@ def main(case_name: str, case_type, method_name = None, show_result = True) -> N
         )  # Write the error result to the standard output
         msg = f"error result: {error_result}"
         LOGGER.info(msg)
+        return
 
 
 if __name__ == "__main__":
     # case_type = "test"　　なら　/problem-linehaul/case/{case_name}/input.json　を読み込む
     # case_type = "problem" なら　手入力
-    main("japan", "test", "dijkstra_simple")
+    obj = main("kyuusyuu", "test", "dijkstra_iter", show_result=False)
     # main("japan", "test", "dijkstra_new")
+    print(obj)
