@@ -107,7 +107,7 @@ def main(work_dir, init_answer_folder, opt_answer_folder, max_epochs=100):
     while epoch < max_epochs:
         epoch += 1
         epoch_improvements = 0
-        print(f"  [Tree Perturb Epoch {epoch}] 46 目的地の網羅的ツリー再生成を開始...")
+        # print(f"  [Tree Perturb Epoch {epoch}] 46 目的地の網羅的ツリー再生成を開始...")
 
         # 💡 ランダムではなく、全目的地 d を順番に1つずつ選択
         for d in prefectures:
@@ -177,8 +177,8 @@ def main(work_dir, init_answer_folder, opt_answer_folder, max_epochs=100):
                 # 悪化したら即座に復元
                 for o, old_v in backups.items():
                     current_hop[(o, d)] = old_v
-
-        print(f"  [Tree Perturb Epoch {epoch}] 終了 - この周の改善件数: {epoch_improvements}件")
+        if epoch % 50 == 0 or epoch_improvements != 0:
+            print(f"  [Tree Perturb Epoch {epoch}] 終了 - この周の改善件数: {epoch_improvements}件")
 
         # 💡【収束判定】46 拠点すべてを一巡しても1件も改善しなかった場合、完全収束と判定して終了
         # if epoch_improvements == 0:

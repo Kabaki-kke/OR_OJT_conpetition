@@ -24,7 +24,7 @@ if __name__ == "__main__":
                 print("local_search 開始")
                 imp= local_search.main(work_dir, opt_answer_folder, opt_answer_folder, 20000)
                 if imp == 0:
-                    imp_redijk = re_dijk.main(work_dir, opt_answer_folder, opt_answer_folder, 1000)
+                    imp_redijk = re_dijk.main(work_dir, opt_answer_folder, opt_answer_folder, 100)
                     if imp_redijk == 0:
                         break
 
