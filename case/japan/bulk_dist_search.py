@@ -200,12 +200,13 @@ def main(work_dir, init_answer_folder, opt_answer_folder, max_iter):
     print(f"総改善件数: {improvements} 件")
     print(f"最終コスト: {current_cost:,.2f}")
     print(f"最適化された解を保存しました: {output_path}")
+    return improvements
 
 if __name__ == "__main__":
     work_dir = "case/japan"  # 例: "case/japan" や "kyuusyuu" など
-    init_answer_folder = "local_minima_bulk"
-    opt_answer_folder = "local_minima_bulk"
-    for i in range(4):
+    init_answer_folder = "local_minima_mix"
+    opt_answer_folder = "local_minima_mix"
+    for i in range(1):
         print(f"計算 {i+1}/4")
-        max_iter = 20000    # 探索を試行する総回数
-        main(work_dir, init_answer_folder, opt_answer_folder, max_iter)
+        max_iter = 10000    # 探索を試行する総回数
+        imp = main(work_dir, init_answer_folder, opt_answer_folder, max_iter)
